@@ -15,9 +15,6 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.CompletableFuture;
 
 @Component
-@NoArgsConstructor(force = true)
-@AllArgsConstructor
-@RequiredArgsConstructor
 @Slf4j
 public class LibraryEventsProducer {
 
@@ -27,6 +24,11 @@ public class LibraryEventsProducer {
     private final ObjectMapper objectMapper;
 
     private final KafkaTemplate<Integer,String> kafkaTemplate;
+
+    public LibraryEventsProducer(ObjectMapper objectMapper, KafkaTemplate<Integer, String> kafkaTemplate) {
+        this.objectMapper = objectMapper;
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     public CompletableFuture<SendResult<Integer, String>> sendLibraryEvent(LibraryEvent libraryEvent) throws JsonProcessingException {
         var key = libraryEvent.libraryEventId();
